@@ -9,9 +9,10 @@ import { Tag } from '@/models/Tag';
 
 interface TodoListProps {
   allTags: Tag[];
+  selectedTag?: Tag;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ allTags }) => {
+export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -40,8 +41,8 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags }) => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const res = await API.get('/task')
-        console.log('res: ', res);
+        const url = selectedTag ? `/task?tagId=${selectedTag._id}` : '/task';
+        const res = await API.get(url)
         setTasks(res.data);
       } catch (e) {
         // console.log('e: ', e);
@@ -49,7 +50,7 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags }) => {
     }
 
     getTasks();
-  }, [])
+  }, [selectedTag])
 
   return (
     <div>

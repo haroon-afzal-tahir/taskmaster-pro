@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 
 const MainAppPage = () => {
   const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [selectedTag, setSelectedTag] = useState<Tag>();
+  // const [tasks, setTasks] = useState<unknown[]>([]);
 
   useEffect(() => {
     const getTags = async () => {
@@ -24,10 +26,10 @@ const MainAppPage = () => {
 
   return (
     <main className='flex w-full h-screen'>
-      <Sidebar tags={allTags} />
+      <Sidebar tags={allTags} selectedTag={selectedTag} setSelectedTag={setSelectedTag} />
       <div className='flex flex-[8] flex-col gap-10 w-full h-full mx-[10%] py-10'>
         <Filter />
-        <TodoList allTags={allTags} />
+        <TodoList allTags={allTags} selectedTag={selectedTag} />
       </div>
     </main>
   )

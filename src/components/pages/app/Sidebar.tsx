@@ -17,12 +17,13 @@ import { Tag } from '@/models/Tag';
 
 interface SidebarProps {
   tags?: Tag[];
+  setSelectedTag: React.Dispatch<React.SetStateAction<Tag | undefined>>;
+  selectedTag: Tag | undefined;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ tags }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ tags, setSelectedTag, selectedTag }) => {
   
   const [isCollapsed, setCollapsed] = useState<boolean>(false);
-  const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
 
   return (
     <div className={`flex flex-col w-[20%] transition-all duration-500 ${isCollapsed ? '-translate-x-full -mr-[20%]' : ''}`}>
@@ -44,7 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ tags }) => {
             {tags?.map((tag, i) => (
               <li
                 key={i}
-                onClick={() => setSelectedTag(tag)}
+                onClick={() => setSelectedTag?.(tag)}
                 className={`flex gap-4 items-center ${selectedTag === tag ? 'bg-neutral-300' : 'hover:bg-neutral-200'} p-2 rounded cursor-pointer transition-all`}
               >
                 <span>
