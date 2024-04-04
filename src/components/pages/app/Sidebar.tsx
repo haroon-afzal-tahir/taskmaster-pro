@@ -27,7 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ tags, setSelectedTag, selected
 
 
   return (
-    <div className={`flex flex-col w-[20%] transition-all duration-500 ${isCollapsed ? '-translate-x-full -mr-[20%]' : ''}`}>
+    <div className={`flex flex-col md:w-[20%] md:relative h-full absolute w-[80%] transition-all duration-500 ${isCollapsed ? '-translate-x-full md:-mr-[20%] -mr-[80%]' : ''}`}>
       <div className={`relative ml-2 my-2 px-4 py-8 rounded bg-white flex-1`}>
         <Button
           mode='icon'
@@ -38,7 +38,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ tags, setSelectedTag, selected
         </Button>
         
         {!false && <>
-          <h3 className='text-xl font-semibold text-center text-secondary whitespace-nowrap'>
+          <h3 className='text-xl font-semibold text-center text-secondary md:whitespace-nowrap'>
             Taskmaster Pro
           </h3>
             
