@@ -27,7 +27,7 @@ const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
 
   const [open, setOpen] = useState(false);
   const [title, setTitle] = React.useState<string>('');
-  const [dueDate, setDueDate] = React.useState<Date | null>(null);
+  const [dueDate, setDueDate] = React.useState<Date | string | null>(null);
   const [selectedTagId, setSelectedTagId] = React.useState<string>('');
 
   const onTaskAdd = async (e: FormEvent<HTMLFormElement>) => {
@@ -100,7 +100,7 @@ const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
         </DialogContent>
 
         <DialogActions>
-          <Button type='button' onClick={onClose}>Close</Button>
+          <Button type='button' variant='default' onClick={onClose}>Close</Button>
           <Button type='submit'>Add</Button>
         </DialogActions>
       </form>

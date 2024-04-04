@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ tags, setSelectedTag, selected
             Taskmaster Pro
           </h3>
             
-          <ol className='flex flex-col gap-2'>
+          <ol className='flex flex-col gap-2 mt-4'>
             {tags?.map((tag, i) => (
               <li
                 key={i}
