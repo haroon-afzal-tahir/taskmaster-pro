@@ -34,10 +34,16 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
   
   const [editModal, setEditModal] = useState<boolean>(false);
   const openEditModal = () => {setEditModal(true); closeMenu()};
-  const closeEditModal = () => setEditModal(false)
+  const closeEditModal = () => setEditModal(false);
+  const closeEditModalForm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setEditModal(false);
+    closeMenu();
+  };
 
-  const onTaskDelete = async () => {
+  const onTaskDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     try {
+      e.preventDefault();
       const { data } = await API.delete(`/task/${selectedTask?._id}`);
       setTasks(tasks.filter(task => task._id !== selectedTask?._id));
       closeDeleteModal();
@@ -50,8 +56,9 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
     }
   }
 
-  const onTaskUpdate = async () => {
+  const onTaskUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
+      e.preventDefault();
       const { data } = await API.patch(`/task/${editSelectedTask?._id}`, {
         title: editSelectedTask?.title,
         tag: editSelectedTask?.tag?._id,
@@ -177,7 +184,7 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button variant='default' autoFocus onClick={closeEditModal}>Cancel</Button>
+            <Button variant='default' type='button' autoFocus onClick={closeEditModalForm}>Cancel</Button>
             <Button variant='default' type='submit' className='!text-red-500'>
               Save Changes
             </Button>
