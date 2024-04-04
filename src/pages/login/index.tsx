@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
 import { AxiosError } from 'axios';
+import { useAuth } from '@/context/auth';
 
 interface InputField {
   email: string;
@@ -18,6 +19,8 @@ const LoginPage = () => {
   const [input, setInput] = useState<InputField>({ email: '', password: '' });
   const navigate = useNavigate();
 
+  const { setUser } = useAuth();
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -25,6 +28,7 @@ const LoginPage = () => {
       const { data } = await API.post('/auth/login', input);
       CookieHelper.setCookie('token', data.token, 1);
 
+      setUser(data.user);
       toast.success('Login successful');
       navigate('/');
     } catch (error) {
