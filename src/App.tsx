@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { publicRoutes } from './routes/public';
+import { publicRoutes } from './routes/route';
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const App: React.FC = () => {

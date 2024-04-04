@@ -2,7 +2,6 @@ import { CookieHelper } from "@/utils/cookie";
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_APP_API_URL;
-console.log(baseURL);
 
 const API = axios.create({
   baseURL,

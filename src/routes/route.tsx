@@ -3,11 +3,18 @@ import MainAppPage from "../pages/app";
 import LoginPage from "../pages/login";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import RegisterPage from "@/pages/register";
+import { PrivateRoute } from "./private";
 
 export const publicRoutes: RouteObject[] = [
     {
         path: "/",
-        element: <MainAppPage />,
+        element: <PrivateRoute />,
+        children: [
+            {
+                path: "/",
+                element: <MainAppPage />
+            }
+        ]
     },
     {
         path: 'login',

@@ -41,7 +41,7 @@ const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
       })
       onClose();
     } catch (e) {
-      console.log('e: ', e);
+      // console.log('e: ', e);
     }
   }
 

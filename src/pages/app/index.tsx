@@ -14,7 +14,7 @@ const MainAppPage = () => {
         const { data } = await API.get<Tag[]>('/tag')
         setAllTags(data);
       } catch (e) {
-        console.log('e: ', e);
+        // console.log('e: ', e);
       }
     }
     getTags();
