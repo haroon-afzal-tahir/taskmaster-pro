@@ -11,6 +11,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { Tag } from '@/models/Tag';
 import { API } from '@/config/axios';
+import toast from 'react-hot-toast';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children: React.ReactElement<unknown, string> },
@@ -40,6 +41,7 @@ const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
         tag: selectedTagId
       })
       onClose();
+      toast.success('Task added successfully');
     } catch (e) {
       // console.log('e: ', e);
     }
@@ -54,7 +56,8 @@ const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
 
   return (<>
     <Button
-      className='fixed flex items-center w-auto gap-2 px-4 py-2 rounded-full bottom-10 left-1/2'
+    // fixed on bottom center
+      className='fixed flex items-center w-auto gap-2 px-4 transform -translate-x-1/2 rounded-full bottom-4 left-1/2'
       onClick={() => setOpen(true)}
     >
       <IoIosAdd size={16} />

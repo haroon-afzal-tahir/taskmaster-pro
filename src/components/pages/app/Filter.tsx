@@ -12,7 +12,7 @@ export const Filter: React.FC = () => {
     navigate('/login');
   }
   return (
-    <div className='flex justify-between w-full'>
+    <div className='flex flex-col justify-between w-full md:flex-row'>
       <div className='flex flex-col gap-2'>
         <h1 className='text-xl font-semibold'>Good Morning, {user?.name || "User"}! 👋</h1>
       </div>

@@ -30,12 +30,12 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
   const [selectedTask, setSelectedTask] = useState<Task>();
   
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const openDeleteModal = () => setDeleteModal(true);
+  const openDeleteModal = () => {setDeleteModal(true); closeMenu();};
   const closeDeleteModal = () => setDeleteModal(false);
   
   const [editModal, setEditModal] = useState<boolean>(false);
-  const openEditModal = () => setEditModal(true);
-  const closeEditModal = () => setEditModal(false);
+  const openEditModal = () => {setEditModal(true); closeMenu()};
+  const closeEditModal = () => setEditModal(false)
 
   const onTaskDelete = async () => {
     try {
@@ -89,7 +89,7 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
       <ol className='flex flex-col gap-2'>
         {tasks.map((task, i) => (
           <li key={i} className='flex items-center gap-4 px-4 py-2 bg-white rounded'>
-            <span className='flex-1 text-sm'>{task.title}</span>
+            <span className='flex-1 text-sm truncate'>{task.title}</span>
             <span className={`px-2 py-1 text-xs rounded-full ${task.completed ? 'bg-green-200 text-green-700' : 'bg-yellow-200 text-yellow-700'}`}>
               {task.completed ? 'Completed' : 'Pending'}
             </span>
@@ -137,50 +137,52 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
 
       <Dialog open={editModal} onClose={closeEditModal} maxWidth={'sm'} fullWidth>
         <DialogTitle>Edit {selectedTask?.title}</DialogTitle>
-        <DialogContent className='flex flex-col gap-4'>
-          {editSelectedTask && (
-            <>
-              <DialogContentText>
-                Edit the task details below.
-              </DialogContentText>
-              <TextField
-                required
-                label="Title"
-                value={editSelectedTask.title}
-                onChange={e => setEditSelectedTask({ ...editSelectedTask, title: e.target.value })}
-              />
-              <FormControl fullWidth>
-                <InputLabel id="edit-task-tag">Tag</InputLabel>
-                <Select
+        <form onSubmit={onTaskUpdate}>
+          <DialogContent className='flex flex-col gap-4'>
+            {editSelectedTask && (
+              <>
+                <DialogContentText>
+                  Edit the task details below.
+                </DialogContentText>
+                <TextField
                   required
-                  label='Tag'
-                  labelId="edit-task-tag"
-                  value={editSelectedTask.tag?._id}
-                  onChange={(e) => setEditSelectedTask({ ...editSelectedTask, tag: allTags.find(tag => tag._id === e.target.value) })}
-                >
-                  {allTags.map((tag, i) => (
-                    <MenuItem key={i} value={tag._id}>{tag.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Switch 
-                    checked={editSelectedTask.completed}
-                    onChange={e => setEditSelectedTask({ ...editSelectedTask, completed: e.target.checked })}
-                  />}
-                  label="Completed"
+                  label="Title"
+                  value={editSelectedTask.title}
+                  onChange={e => setEditSelectedTask({ ...editSelectedTask, title: e.target.value })}
                 />
-              </FormGroup>
-            </>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button variant='default' autoFocus onClick={closeEditModal}>Cancel</Button>
-          <Button variant='default' onClick={onTaskUpdate} className='!text-red-500'>
-            Save Changes
-          </Button>
-        </DialogActions>
+                <FormControl fullWidth>
+                  <InputLabel id="edit-task-tag">Tag</InputLabel>
+                  <Select
+                    required
+                    label='Tag'
+                    labelId="edit-task-tag"
+                    value={editSelectedTask.tag?._id}
+                    onChange={(e) => setEditSelectedTask({ ...editSelectedTask, tag: allTags.find(tag => tag._id === e.target.value) })}
+                  >
+                    {allTags.map((tag, i) => (
+                      <MenuItem key={i} value={tag._id}>{tag.name}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Switch 
+                      checked={editSelectedTask.completed}
+                      onChange={e => setEditSelectedTask({ ...editSelectedTask, completed: e.target.checked })}
+                    />}
+                    label="Completed"
+                  />
+                </FormGroup>
+              </>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button variant='default' autoFocus onClick={closeEditModal}>Cancel</Button>
+            <Button variant='default' type='submit' className='!text-red-500'>
+              Save Changes
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   )

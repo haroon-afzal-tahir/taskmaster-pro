@@ -1,19 +1,8 @@
-"use client"
-
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@/components/ui/Button';
 import { RiExpandLeftRightFill } from "react-icons/ri";
 import { Tag } from '@/models/Tag';
-
-// const tags = [
-//   {name: 'Home', icon: null},
-//   {name: 'Completed', icon: null},
-//   {name: 'Personal', icon: null},
-//   {name: 'Work', icon: null},
-//   {name: 'Diet', icon: '💪'},
-//   {name: 'Reading', icon: '📚'},
-//   {name: 'Road Trip', icon: '🚗'},
-// ]
+import { useMobile } from '@/hooks/useMobile';
 
 interface SidebarProps {
   tags?: Tag[];
@@ -24,6 +13,18 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ tags, setSelectedTag, selectedTag }) => {
   
   const [isCollapsed, setCollapsed] = useState<boolean>(false);
+
+  const isMobile = useMobile();
+
+  useEffect(() => {
+    if (isMobile) setCollapsed(true);
+    else setCollapsed(false);
+  }, [isMobile]);
+
+  // const toggleSidebar = () => {
+  //   setCollapsed(!isCollapsed);
+  // };
+
 
   return (
     <div className={`flex flex-col w-[20%] transition-all duration-500 ${isCollapsed ? '-translate-x-full -mr-[20%]' : ''}`}>
