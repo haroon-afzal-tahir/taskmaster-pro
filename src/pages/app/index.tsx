@@ -1,4 +1,5 @@
 import Filter from '@/components/pages/app/Filter'
+import NewTaskAdder from '@/components/pages/app/NewTaskAdder'
 import Sidebar from '@/components/pages/app/Sidebar'
 import TodoList from '@/components/pages/app/TodoList'
 import { API } from '@/config/axios'
@@ -8,7 +9,7 @@ import { useEffect, useState } from 'react'
 const MainAppPage = () => {
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [selectedTag, setSelectedTag] = useState<Tag>();
-  // const [tasks, setTasks] = useState<unknown[]>([]);
+  const [isCreated, setIsCreated] = useState<boolean>(false);
 
   useEffect(() => {
     const getTags = async () => {
@@ -19,10 +20,9 @@ const MainAppPage = () => {
         // console.log('e: ', e);
       }
     }
-    const getAllTasks = async () => {}
     
-    Promise.all([getTags(), getAllTasks()]);
-  }, []);
+    getTags();
+  }, [isCreated]);
 
   return (
     <main className='flex w-full h-screen'>
@@ -31,6 +31,7 @@ const MainAppPage = () => {
         <Filter />
         <TodoList allTags={allTags} selectedTag={selectedTag} />
       </div>
+      <NewTaskAdder allTags={allTags} setIsCreated={setIsCreated} />
     </main>
   )
 }

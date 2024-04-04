@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import NewTaskAdder from './NewTaskAdder'
 import Button from '@/components/ui/Button';
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormGroup, InputLabel, Menu, MenuItem, Select, Switch, TextField } from '@mui/material';
@@ -109,7 +108,6 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
         ))}
       </ol>
 
-      <NewTaskAdder allTags={allTags} />
 
       {/* Dialogs */}
       <Menu

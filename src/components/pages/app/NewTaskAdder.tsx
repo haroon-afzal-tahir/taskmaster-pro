@@ -22,9 +22,10 @@ const Transition = React.forwardRef(function Transition(
 
 interface NewTaskAdderProps {
   allTags: Tag[];
+  setIsCreated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
+const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags, setIsCreated }) => {
 
   const [open, setOpen] = useState(false);
   const [title, setTitle] = React.useState<string>('');
@@ -40,6 +41,7 @@ const NewTaskAdder: React.FC<NewTaskAdderProps> = ({ allTags }) => {
         dueDate, 
         tag: selectedTagId
       })
+      setIsCreated(flag => !flag);
       onClose();
       toast.success('Task added successfully');
     } catch (e) {
