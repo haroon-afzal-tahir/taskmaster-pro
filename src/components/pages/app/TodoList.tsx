@@ -11,9 +11,11 @@ import { DateHelper } from '@/utils/date';
 interface TodoListProps {
   allTags: Tag[];
   selectedTag?: Tag;
+  isUpdated?: boolean;
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
+export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag, setIsDeleted, isUpdated }) => {
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -49,7 +51,7 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
       closeDeleteModal();
 
       toast.success(data.message);
-
+      setIsDeleted(flag => !flag);
       closeMenu();
     } catch (error) { 
       // 
@@ -88,7 +90,7 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
     }
 
     getTasks();
-  }, [selectedTag])
+  }, [selectedTag, isUpdated])
 
   return (
     <div>
