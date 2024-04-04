@@ -98,7 +98,7 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag, setIsD
         {tasks.map((task, i) => (
           <li key={i} className='flex flex-col items-center gap-4 px-4 py-2 bg-white rounded md:flex-row'>
             <span className='flex-1 text-sm truncate'>{task.title}</span>
-            <div className='flex items-center gap-4'>
+            <div className='flex items-center justify-between w-full gap-4 md:w-fit'>
               <span className={`px-2 py-1 text-xs rounded-full ${task.completed ? 'bg-green-200 text-green-700' : 'bg-yellow-200 text-yellow-700'}`}>
                 {task.completed ? 'Completed' : 'Pending'}
               </span>
