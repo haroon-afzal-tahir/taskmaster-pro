@@ -3,6 +3,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { publicRoutes } from './routes/route';
 import { createTheme, ThemeProvider } from "@mui/material";
+import { Toaster } from "react-hot-toast";
 
 const App: React.FC = () => {
   
@@ -18,6 +19,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterLuxon}>
+        <Toaster position="bottom-right"/>
         <RouterProvider router={router} />
       </LocalizationProvider>
     </ThemeProvider>

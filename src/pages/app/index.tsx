@@ -17,7 +17,9 @@ const MainAppPage = () => {
         // console.log('e: ', e);
       }
     }
-    getTags();
+    const getAllTasks = async () => {}
+    
+    Promise.all([getTags(), getAllTasks()]);
   }, []);
 
   return (

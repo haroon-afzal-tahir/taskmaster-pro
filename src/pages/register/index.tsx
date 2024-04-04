@@ -2,33 +2,67 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import TodoCompletedTasks from '@/components/icons/TodoCompletedTasks'
 import { APP_HEADLINE, APP_TITLE } from '@/constants/app'
-import { FcGoogle } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { API } from '@/config/axios'
+import { CookieHelper } from '@/utils/cookie'
+import toast from "react-hot-toast"
+import { AxiosError } from 'axios'
+
+interface InputField {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  
+  const [input, setInput] = useState<InputField>({ name: '', username: '', email: '', password: '', confirmPassword: '' })
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      if (!input.name || !input.username || !input.email || !input.password || !input.confirmPassword) return alert('Please fill in all fields');
+      if (input.password !== input.confirmPassword) return alert('Passwords do not match');
+      if (input.password.length < 8) return alert('Password must be at least 8 characters');
+
+      const { data } = await API.post('/auth/register', input);
+      CookieHelper.setCookie('token', data.token, 1);
+      toast.success('Registration successful');
+      navigate('/');
+    } catch (error) {
+      if ((error as AxiosError).response) {
+        const errorMessage = (error as AxiosError<{ message: string }>).response?.data?.message || 'An error occurred. Please try again later.';
+        toast.error(errorMessage);
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+    }
+  }
+
+  const handleInputUpdate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInput({
+      ...input,
+      [e.target.name]: e.target.value
+    })
+  }
+
   return (
     <div className='flex w-full h-screen px-4 md:px-0'>
       <div className='flex flex-col items-center justify-center w-full gap-4'>
         <h1 className='text-xl font-bold'>Register</h1>
-        <div className='flex flex-col items-center justify-center w-full gap-4 max-w-96'>
-          <Input label='Name' />
-          <Input label='Username' />
-          <Input label='Email' type='email' />
-          <Input label='Password' type='password' />
-          <Input label='Confirm Password' type='password' />
+        <form onSubmit={handleRegister} className='flex flex-col items-center justify-center w-full gap-4 max-w-96'>
+          <Input id='name' name='name' label='Name' required value={input.name} onChange={handleInputUpdate}/>
+          <Input id='username' name='username' label='Username' required value={input.username} onChange={handleInputUpdate} />
+          <Input id='email' name='email' label='Email' type='email' required value={input.email} onChange={handleInputUpdate} />
+          <Input id='password' name='password' label='Password' required type='password' value={input.password} onChange={handleInputUpdate} />
+          <Input id='confirmPassword' name='confirmPassword' required label='Confirm Password' type='password' value={input.confirmPassword} onChange={handleInputUpdate} />
 
-          <Button className='hover:bg-secondary/95'>Sign Up</Button>
-        </div>
-        <div className='flex items-center w-full gap-4 mx-auto max-w-96'>
-          <span className='w-full border-b border-gray-300'></span>
-          <span className='text-xs text-gray-500'>OR</span>
-          <span className='w-full border-b border-gray-300'></span>
-        </div>
-
-        <Button className='flex items-center justify-center w-full gap-4 mx-auto font-semibold bg-primary/50 hover:bg-primary/60 text-secondary max-w-96'>
-          <FcGoogle className='text-lg'/>
-          Sign Up with Google
-        </Button>
+          <Button type='submit' className='hover:bg-secondary/95'>Sign Up</Button>
+        </form>
 
         <div className='flex gap-1 mx-auto max-w-96'>
           <span className='text-sm'>Already have an account?</span>

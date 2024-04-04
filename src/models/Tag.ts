@@ -3,4 +3,5 @@ export interface Tag {
     name: string;
     icon: string;
     createdAt: string;
+    count: number;
 }

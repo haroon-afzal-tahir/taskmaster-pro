@@ -51,7 +51,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ tags }) => {
                   {tag.icon ?? <input type='checkbox' checked={selectedTag === tag} />}
                 </span>
                 <span className='flex-1'>{tag.name}</span>
-                <div className='flex items-center px-2 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700'>10</div>
+                <div className='flex items-center px-2 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700'>{tag.count}</div>
               </li>
             ))}
           </ol>

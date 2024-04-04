@@ -1,49 +1,68 @@
 import TodoGirl from '@/components/icons/TodoGirl';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
+import { API } from '@/config/axios';
 import { APP_HEADLINE, APP_TITLE } from '@/constants/app';
-import { FcGoogle } from "react-icons/fc";
-import { Link } from 'react-router-dom';
+import { CookieHelper } from '@/utils/cookie';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from "react-hot-toast";
+import { AxiosError } from 'axios';
+
+interface InputField {
+  email: string;
+  password: string;
+}
 
 const LoginPage = () => {
+  const [input, setInput] = useState<InputField>({ email: '', password: '' });
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      if (!input.email || !input.password) return alert('Please fill in all fields');
+      const { data } = await API.post('/auth/login', input);
+      CookieHelper.setCookie('token', data.token, 1);
+
+      toast.success('Login successful');
+      navigate('/');
+    } catch (error) {
+      if ((error as AxiosError).response) {
+        const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data.message || 'An error occurred. Please try again later.';
+        toast.error(errorMessage);
+      } else {
+        toast.error('An error occurred. Please try again later.');
+      }
+    }
+  }
+  
   return (
-    <div className='flex w-full h-screen max-h-screen md:px-0 px-4'>
-      <div className='flex-col items-center justify-center w-full bg-primaryLight hidden md:flex'>
+    <div className='flex w-full h-screen max-h-screen px-4 md:px-0'>
+      <div className='flex-col items-center justify-center hidden w-full bg-primaryLight md:flex'>
         <TodoGirl className='w-96 h-96'/>
-        <div className='flex flex-col gap-4 items-center max-w-96'>
-          <h1 className='font-bold text-secondary text-2xl text-center'>{APP_TITLE}</h1>
-          <p className='text-secondary text-sm text-center'>{APP_HEADLINE}</p>
+        <div className='flex flex-col items-center gap-4 max-w-96'>
+          <h1 className='text-2xl font-bold text-center text-secondary'>{APP_TITLE}</h1>
+          <p className='text-sm text-center text-secondary'>{APP_HEADLINE}</p>
         </div>
       </div>
-      <div className='w-full flex flex-col gap-10 items-center justify-center'>
-        <h1 className='font-bold text-xl'>Login</h1>
-        <div className='flex flex-col gap-4 items-center justify-center max-w-96 w-full'>
-          <Input label='Username or Email' />
-          <Input label='Password' type='password' />
+      <div className='flex flex-col items-center justify-center w-full gap-10'>
+        <h1 className='text-xl font-bold'>Login</h1>
+        <form onSubmit={handleLogin} className='flex flex-col items-center justify-center w-full gap-4 max-w-96'>
+          <Input label='Email' type='email' required value={input.email} onChange={(e) => setInput({ ...input, email: e.target.value })} />
+          <Input label='Password' type='password' required value={input.password} onChange={(e) => setInput({ ...input, password: e.target.value })} />
           <Link
             to={'/forgot-password'}
-            className='text-primary text-sm font-semibold text-end self-end hover:underline transition-all'
+            className='self-end text-sm font-semibold transition-all text-primary text-end hover:underline'
           >
             Forgot Password?
           </Link>
 
-          <Button className='hover:bg-secondary/95'>Sign In</Button>
-
-        </div>
-        <div className='flex gap-4 w-full items-center max-w-96 mx-auto'>
-          <span className='border-b border-gray-300 w-full'></span>
-          <span className='text-gray-500 text-xs'>OR</span>
-          <span className='border-b border-gray-300 w-full'></span>
-        </div>
-
-        <Button className='bg-primary/50 w-full hover:bg-primary/60 max-w-96 mx-auto flex items-center justify-center gap-4 text-secondary font-semibold'>
-          <FcGoogle className='text-lg'/>
-          Sign In with Google
-        </Button>
-
-        <div className='flex gap-1 max-w-96 mx-auto'>
+          <Button type='submit' className='hover:bg-secondary/95'>Sign In</Button>
+        </form>
+        <div className='flex gap-1 mx-auto max-w-96'>
           <span className='text-sm'>Dont have an account?</span>
-          <Link to='/register' className='text-primary text-sm font-semibold hover:underline transition-all'>Create an account</Link>
+          <Link to='/register' className='text-sm font-semibold transition-all text-primary hover:underline'>Create an account</Link>
         </div>
       </div>
     </div>

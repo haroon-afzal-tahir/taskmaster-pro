@@ -17,6 +17,9 @@ const OTPInput: React.FC<Props> = ({ length, onComplete }) => {
         const nextInput = element.nextSibling as HTMLInputElement | null;
         if (nextInput) {
           nextInput.focus();
+        } else {
+          // Submit OTP
+          onComplete && onComplete(`${otp.join('')}${value}`);
         }
       } else if (value === '') {
         // Allow deletion
@@ -34,10 +37,10 @@ const OTPInput: React.FC<Props> = ({ length, onComplete }) => {
     };
 
     return (
-        <div onPaste={handlePaste} className="flex space-x-2 self-center">
+        <div onPaste={handlePaste} className="flex self-center space-x-2">
             {otp.map((data, index) => (
                 <input
-                    className="w-12 h-12 text-center text-lg rounded border outline-none focus:ring-primary focus:ring-2 transition-all"
+                    className="w-12 h-12 text-lg text-center transition-all border rounded outline-none focus:ring-primary focus:ring-2"
                     key={index}
                     type="text"
                     name={`otp-${index}`}
