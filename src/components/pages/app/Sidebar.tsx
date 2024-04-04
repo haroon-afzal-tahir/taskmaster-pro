@@ -3,21 +3,26 @@
 import React, { useState } from 'react'
 import Button from '@/components/ui/Button';
 import { RiExpandLeftRightFill } from "react-icons/ri";
+import { Tag } from '@/models/Tag';
 
-const tags = [
-  {name: 'Home', icon: null},
-  {name: 'Completed', icon: null},
-  {name: 'Personal', icon: null},
-  {name: 'Work', icon: null},
-  {name: 'Diet', icon: '💪'},
-  {name: 'Reading', icon: '📚'},
-  {name: 'Road Trip', icon: '🚗'},
-]
+// const tags = [
+//   {name: 'Home', icon: null},
+//   {name: 'Completed', icon: null},
+//   {name: 'Personal', icon: null},
+//   {name: 'Work', icon: null},
+//   {name: 'Diet', icon: '💪'},
+//   {name: 'Reading', icon: '📚'},
+//   {name: 'Road Trip', icon: '🚗'},
+// ]
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  tags?: Tag[];
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ tags }) => {
   
   const [isCollapsed, setCollapsed] = useState<boolean>(false);
-  const [selectedTag, setSelectedTag] = useState<unknown>(null);
+  const [selectedTag, setSelectedTag] = useState<Tag | null>(null);
 
   return (
     <div className={`flex flex-col w-[20%] transition-all duration-500 ${isCollapsed ? '-translate-x-full -mr-[20%]' : ''}`}>
@@ -31,12 +36,12 @@ export const Sidebar: React.FC = () => {
         </Button>
         
         {!false && <>
-          <h3 className='text-secondary text-center text-xl font-semibold whitespace-nowrap'>
+          <h3 className='text-xl font-semibold text-center text-secondary whitespace-nowrap'>
             Taskmaster Pro
           </h3>
             
           <ol className='flex flex-col gap-2'>
-            {tags.map((tag, i) => (
+            {tags?.map((tag, i) => (
               <li
                 key={i}
                 onClick={() => setSelectedTag(tag)}
@@ -46,7 +51,7 @@ export const Sidebar: React.FC = () => {
                   {tag.icon ?? <input type='checkbox' checked={selectedTag === tag} />}
                 </span>
                 <span className='flex-1'>{tag.name}</span>
-                <div className='bg-neutral-200 text-neutral-700  rounded-full px-2 py-1 text-xs flex items-center'>10</div>
+                <div className='flex items-center px-2 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700'>10</div>
               </li>
             ))}
           </ol>

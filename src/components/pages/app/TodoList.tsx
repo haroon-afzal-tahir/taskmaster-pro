@@ -4,9 +4,14 @@ import Button from '@/components/ui/Button';
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Menu, MenuItem } from '@mui/material';
 import { Task } from '@/models/Task';
-import axios from 'axios';
+import { API } from '@/config/axios';
+import { Tag } from '@/models/Tag';
 
-export const TodoList: React.FC = () => {
+interface TodoListProps {
+  allTags: Tag[];
+}
+
+export const TodoList: React.FC<TodoListProps> = ({ allTags }) => {
 
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -35,7 +40,7 @@ export const TodoList: React.FC = () => {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const res = await axios.get('http://192.168.18.129:5000/task', { headers: { 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imhhcm9vbnRhaGlycjEwMEBnbWFpbC5jb20iLCJuYW1lIjoiSGFyb29uIFRhaGlyIiwidXNlcm5hbWUiOiJoYXJvb250YWhpcnIxMDAiLCJpZCI6IjY2MGRkNjUyZDAxZTBmZTQ5ZjI1ZmQzNyIsImlhdCI6MTcxMjE4Mjg2NiwiZXhwIjoxNzEyMjY5MjY2fQ.VNpiVbLMrwg33QUPsGP01PzUDJj4rFL7kpQeAIYtgHI' } })
+        const res = await API.get('/task')
         console.log('res: ', res);
         setTasks(res.data);
       } catch (e) {
@@ -50,17 +55,17 @@ export const TodoList: React.FC = () => {
     <div>
       <ol className='flex flex-col gap-2'>
         {tasks.map((task, i) => (
-          <li key={i} className='flex items-center gap-4 bg-white rounded px-4 py-2'>
+          <li key={i} className='flex items-center gap-4 px-4 py-2 bg-white rounded'>
             <input type='checkbox' checked={task.completed} />
             <span className='flex-1'>{task.title}</span>
-            <Button onClick={e => openMenu(e, task)} mode='icon' variant='default' className='bg-neutral-200 rounded'>
+            <Button onClick={e => openMenu(e, task)} mode='icon' variant='default' className='rounded bg-neutral-200'>
               <HiOutlineDotsVertical />
             </Button>
           </li>
         ))}
       </ol>
 
-      <NewTaskAdder />
+      <NewTaskAdder allTags={allTags} />
 
       {/* Dialogs */}
       <Menu
