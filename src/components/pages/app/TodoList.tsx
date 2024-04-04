@@ -88,21 +88,23 @@ export const TodoList: React.FC<TodoListProps> = ({ allTags, selectedTag }) => {
     <div>
       <ol className='flex flex-col gap-2'>
         {tasks.map((task, i) => (
-          <li key={i} className='flex items-center gap-4 px-4 py-2 bg-white rounded'>
+          <li key={i} className='flex flex-col items-center gap-4 px-4 py-2 bg-white rounded md:flex-row'>
             <span className='flex-1 text-sm truncate'>{task.title}</span>
-            <span className={`px-2 py-1 text-xs rounded-full ${task.completed ? 'bg-green-200 text-green-700' : 'bg-yellow-200 text-yellow-700'}`}>
-              {task.completed ? 'Completed' : 'Pending'}
-            </span>
-            {task.tag && (
-              <span className='flex items-center px-2 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700'>
-                {task.tag.icon && <span className='mr-1'>{task.tag.icon}</span>}
-                {task.tag.name}
+            <div className='flex items-center gap-4'>
+              <span className={`px-2 py-1 text-xs rounded-full ${task.completed ? 'bg-green-200 text-green-700' : 'bg-yellow-200 text-yellow-700'}`}>
+                {task.completed ? 'Completed' : 'Pending'}
               </span>
-            )}
-            <span className='text-xs font-medium text-secondary'>{DateHelper.getFormattedDate(new Date(task.dueDate))}</span>
-            <Button onClick={e => openMenu(e, task)} mode='icon' variant='default' className='rounded bg-neutral-200'>
-              <HiOutlineDotsVertical />
-            </Button>
+              {task.tag && (
+                <span className='flex items-center px-2 py-1 text-xs rounded-full bg-neutral-200 text-neutral-700'>
+                  {task.tag.icon && <span className='mr-1'>{task.tag.icon}</span>}
+                  {task.tag.name}
+                </span>
+              )}
+              <span className='text-xs font-medium text-secondary'>{DateHelper.getFormattedDate(new Date(task.dueDate))}</span>
+              <Button onClick={e => openMenu(e, task)} mode='icon' variant='default' className='rounded bg-neutral-200'>
+                <HiOutlineDotsVertical />
+              </Button>
+            </div>
           </li>
         ))}
       </ol>

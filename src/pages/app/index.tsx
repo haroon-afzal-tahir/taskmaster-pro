@@ -27,7 +27,7 @@ const MainAppPage = () => {
   return (
     <main className='flex w-full h-screen'>
       <Sidebar tags={allTags} selectedTag={selectedTag} setSelectedTag={setSelectedTag} />
-      <div className='flex flex-[8] flex-col gap-10 w-full h-full mx-[10%] py-10'>
+      <div className='flex md:flex-[8] flex-col gap-10 w-full h-full md:mx-[10%] mx-[5%] py-10'>
         <Filter />
         <TodoList allTags={allTags} selectedTag={selectedTag} />
       </div>
