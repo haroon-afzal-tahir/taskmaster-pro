@@ -3,7 +3,7 @@ import { API } from "@/config/axios";
 import { User } from "@/models/User";
 import { CookieHelper } from "@/utils/cookie";
 import { AxiosError } from "axios";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const AuthContext = createContext<AuthContextProps>({ user: null, logout: () => {}, setUser: () => { } });
@@ -38,6 +38,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
   }
+
+  useEffect(() => {
+    try {
+      if (CookieHelper.getCookie('token')) {
+        const user = localStorage.getItem('user');
+        if (user) {
+          setUser(JSON.parse(user));
+        }
+      } else {
+        setUser(null);
+        localStorage.removeItem('user');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   const value: AuthContextProps = {
     setUser,

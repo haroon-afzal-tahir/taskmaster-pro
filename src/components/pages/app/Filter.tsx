@@ -3,10 +3,6 @@ import { useAuth } from '@/context/auth'
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-// import { Dropdown } from '@mui/base/Dropdown';
-// import { Menu } from '@mui/base/Menu';
-// import { AnimatedListbox, MenuButton, MenuItem } from '../../ui/Dropdown';
-
 export const Filter: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();

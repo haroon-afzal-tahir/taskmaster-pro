@@ -31,6 +31,7 @@ const RegisterPage = () => {
 
       const { data } = await API.post('/auth/register', input);
       CookieHelper.setCookie('token', data.token, 1);
+      localStorage.setItem('user', JSON.stringify(data.user));
       toast.success('Registration successful');
       navigate('/');
     } catch (error) {

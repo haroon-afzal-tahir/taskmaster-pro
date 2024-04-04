@@ -27,6 +27,7 @@ const LoginPage = () => {
       if (!input.email || !input.password) return alert('Please fill in all fields');
       const { data } = await API.post('/auth/login', input);
       CookieHelper.setCookie('token', data.token, 1);
+      localStorage.setItem('user', JSON.stringify(data.user));
 
       setUser(data.user);
       toast.success('Login successful');
