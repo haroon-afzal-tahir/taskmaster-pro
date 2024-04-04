@@ -27,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const { data } = await API.get('/auth/logout');
       CookieHelper.deleteCookie('token');
+      localStorage.removeItem('user');
       toast.success(data.message);
       setUser(null);
     } catch (error) {
